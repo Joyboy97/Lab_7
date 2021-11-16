@@ -118,10 +118,76 @@ public class ScoreWord {
 	 */
 	private int CalculateWordScore() {
 		//TODO: Calculate the Word's score
+		//This just scores the letter 
 		int iTotalScore = 0;
+		for (Space tile : this.tiles) {
+			Space boardspace = this.board.getPuzzle()[tile.getRow()][tile.getCol()];
+			
+			if (boardspace.getBonusSquare() != null && boardspace.getBonusSquare().isUsed() == false) {
 
+				if (boardspace.getBonusSquare().getBonusType() == eBonusType.DoubleLetter
+
+						|| boardspace.getBonusSquare().getBonusType() == eBonusType.TripleLetter
+
+						|| boardspace.getBonusSquare().getBonusType() == eBonusType.Star) {
+
+					BonusSquare bs = boardspace.getBonusSquare();
+
+					if (bs.getBonusType() == eBonusType.DoubleLetter)
+
+						iTotalScore += (tile.getLetter().getiScore() * 2);
+
+					else if (bs.getBonusType() == eBonusType.TripleLetter) {
+
+						iTotalScore += (tile.getLetter().getiScore() * 3);
+
+					}
+
+					//else if (bs.getBonusType() == eBonusType.Star) {
+
+						//iTotalScore += (tile.getLetter().getiScore() * 2);
+
+					//}
+
+				}
+
+		}
+
+			else {
+
+				iTotalScore += tile.getLetter().getiScore();
+
+			}
+
+		}
+
+		for (Space tile : this.tiles) {
+
+			Space boardspace = this.board.getPuzzle()[tile.getRow()][tile.getCol()];
+
+			if (boardspace.getBonusSquare() != null && boardspace.getBonusSquare().isUsed() == false) {
+
+				if (boardspace.getBonusSquare().getBonusType() == eBonusType.DoubleWord
+
+						|| boardspace.getBonusSquare().getBonusType() == eBonusType.TripleWord
+
+						|| boardspace.getBonusSquare().getBonusType() == eBonusType.Star) {
+
+					BonusSquare bs = boardspace.getBonusSquare();
+
+					if (bs.getBonusType() == eBonusType.DoubleWord || bs.getBonusType() == eBonusType.Star)
+
+						iTotalScore += (tile.getLetter().getiScore() * 2);
+
+					else if (bs.getBonusType() == eBonusType.TripleWord) {
+
+						iTotalScore += (tile.getLetter().getiScore() * 3);
+					}
+				}
+			}
+		}
 		return iTotalScore;
-	}
+}
 
 	@SuppressWarnings("incomplete-switch")
 	private boolean spaceInWord(Board b, eMoveType MoveType, Space minSpace, Space maxSpace) {
